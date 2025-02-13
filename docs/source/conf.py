@@ -13,6 +13,7 @@
 import os
 import sys
 import inspect
+
 sys.path.insert(0, os.path.abspath('../..'))
 
 import sphinx_rtd_theme  # noqa
@@ -21,7 +22,7 @@ import deepchem  # noqa
 # -- Project information -----------------------------------------------------
 
 project = 'deepchem'
-copyright = '2020, deepchem-contributors'
+copyright = '2024, deepchem-contributors'
 author = 'deepchem-contributors'
 
 # The full version, including alpha/beta/rc tags
@@ -34,25 +35,27 @@ release = deepchem.__version__
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
+    'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.linkcode',
     'sphinx.ext.mathjax',
     'sphinx.ext.autosectionlabel',
+    'sphinx_copybutton',
 ]
 
 # Options for autodoc directives
 autodoc_default_options = {
-    'member-order': 'bysource',
-    'special-members': True,
-    'exclude-members': '__repr__, __str__, __weakref__, __hash__, __eq__',
+    'member-order':
+        'bysource',
+    'special-members':
+        True,
+    'exclude-members':
+        '__repr__, __str__, __weakref__, __hash__, __eq__, __call__, __dict__',
 }
 
-# How to represents typehints.
+# How to represents typehints
 autodoc_typehints = "signature"
-
-mathjax_path = 'http://mathjax.connectmv.com/MathJax.js?config=default'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -87,12 +90,6 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_context = {
-    'css_files': [
-        '_static/theme_overrides.css',  # override wide tables in RTD theme
-    ],
-}
-
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 html_logo = '_static/logo.png'
@@ -103,29 +100,31 @@ html_theme_options = {
     'display_version': True,
 }
 
+copybutton_remove_prompts = True
+
 # -- Source code links ---------------------------------------------------
 
 
 # Resolve function for the linkcode extension.
 def linkcode_resolve(domain, info):
 
-  def find_source():
-    # try to find the file and line number, based on code from numpy:
-    # https://github.com/numpy/numpy/blob/master/doc/source/conf.py#L286
-    obj = sys.modules[info['module']]
-    for part in info['fullname'].split('.'):
-      obj = getattr(obj, part)
-    fn = inspect.getsourcefile(obj)
-    fn = os.path.relpath(fn, start=os.path.dirname(deepchem.__file__))
-    source, lineno = inspect.getsourcelines(obj)
-    return fn, lineno, lineno + len(source) - 1
+    def find_source():
+        # try to find the file and line number, based on code from numpy:
+        # https://github.com/numpy/numpy/blob/master/doc/source/conf.py#L286
+        obj = sys.modules[info['module']]
+        for part in info['fullname'].split('.'):
+            obj = getattr(obj, part)
+        fn = inspect.getsourcefile(obj)
+        fn = os.path.relpath(fn, start=os.path.dirname(deepchem.__file__))
+        source, lineno = inspect.getsourcelines(obj)
+        return fn, lineno, lineno + len(source) - 1
 
-  if domain != 'py' or not info['module']:
-    return None
-  try:
-    filename = 'deepchem/%s#L%d-L%d' % find_source()
-  except Exception:
-    filename = info['module'].replace('.', '/') + '.py'
+    if domain != 'py' or not info['module']:
+        return None
+    try:
+        filename = 'deepchem/%s#L%d-L%d' % find_source()
+    except Exception:
+        filename = info['module'].replace('.', '/') + '.py'
 
-  tag = 'master' if 'dev' in release else release
-  return "https://github.com/deepchem/deepchem/blob/%s/%s" % (tag, filename)
+    tag = 'master' if 'dev' in release else release
+    return "https://github.com/deepchem/deepchem/blob/%s/%s" % (tag, filename)

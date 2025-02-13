@@ -8,7 +8,7 @@
 [![Test for build scripts](https://github.com/deepchem/deepchem/workflows/Test%20for%20build%20scripts/badge.svg)](https://github.com/deepchem/deepchem/actions?query=workflow%3A%22Test+for+build+scripts%22)
 [![codecov](https://codecov.io/gh/deepchem/deepchem/branch/master/graph/badge.svg?token=5rOZB2BY3h)](https://codecov.io/gh/deepchem/deepchem)  
 
-[Website](https://deepchem.io/) | [Documentation](https://deepchem.readthedocs.io/en/latest/) | [Colab Tutorial](https://github.com/deepchem/deepchem/tree/master/examples/tutorials) | [Discussion Forum](https://forum.deepchem.io/) | [Gitter](https://gitter.im/deepchem/Lobby)
+[Website](https://deepchem.io/) | [Documentation](https://deepchem.readthedocs.io/en/latest/) | [Colab Tutorial](https://github.com/deepchem/deepchem/tree/master/examples/tutorials) | [Discussion Forum](https://forum.deepchem.io/) | [Discord](https://discord.gg/cGzwCdrUqS) | [Model Wishlist](https://github.com/deepchem/deepchem/issues/2680) | [Tutorial Wishlist](https://github.com/deepchem/deepchem/issues/2907)
 
 DeepChem aims to provide a high quality open-source toolchain
 that democratizes the use of deep-learning in drug discovery,
@@ -22,24 +22,23 @@ materials science, quantum chemistry, and biology.
   - [Nightly build version](#nightly-build-version)
   - [Docker](#docker)
   - [From source](#from-source)
+  - [From source lightweight](#from-source-lightweight)
 - [Getting Started](#getting-started)
-  - [Gitter](#gitter)
+  - [Discord](#discord)
 - [About Us](#about-us)
 - [Contributing to DeepChem](/CONTRIBUTING.md)
 - [Citing DeepChem](#citing-deepchem)
 
 ## Requirements
 
-DeepChem currently supports Python 3.6 through 3.7 and requires these packages on any condition.
+DeepChem currently supports Python 3.7 through 3.10 and requires these packages on any condition.
 
 - [joblib](https://pypi.python.org/pypi/joblib)
 - [NumPy](https://numpy.org/)
 - [pandas](http://pandas.pydata.org/)
 - [scikit-learn](https://scikit-learn.org/stable/)
 - [SciPy](https://www.scipy.org/)
-- [TensorFlow](https://www.tensorflow.org/)
-  - `deepchem>=2.4.0` depends on TensorFlow v2
-  - `deepchem<2.4.0` depends on TensorFlow v1
+- [rdkit](https://www.rdkit.org/)
 
 ### Soft Requirements
 
@@ -52,35 +51,49 @@ Please check [the document](https://deepchem.readthedocs.io/en/latest/requiremen
 
 ### Stable version
 
-**Caution!! : The latest stable version was published nearly a year ago. If you are a pip user or you face some errors, we recommend the nightly build version.**
-
-RDKit is a soft requirement package, but many useful methods like molnet depend on it. We recommend installing RDKit with deepchem.
+DeepChem stable version can be installed using pip or conda as
 
 ```bash
-pip install tensorflow==1.14
-conda install -y -c conda-forge rdkit deepchem==2.3.0
+pip install deepchem
+```
+or 
+```
+conda install -c conda-forge deepchem
 ```
 
-If you want GPU support:
+Deepchem provides support for tensorflow, pytorch, jax and each require
+a individual pip Installation.
+
+For using models with tensorflow dependencies, you install using
 
 ```bash
-pip install tensorflow-gpu==1.14
-conda install -y -c conda-forge rdkit deepchem==2.3.0
+pip install deepchem[tensorflow]
 ```
+For using models with torch dependencies, you install using
+
+```bash
+pip install deepchem[torch]
+```
+For using models with jax dependencies, you install using
+
+```bash
+pip install deepchem[jax]
+```
+If GPU support is required, then make sure CUDA is installed and then install the desired deep learning framework using the links below before installing deepchem
+
+1. tensorflow - just cuda installed
+2. pytorch - https://pytorch.org/get-started/locally/#start-locally
+3. jax - https://github.com/google/jax#pip-installation-gpu-cuda
+
+In `zsh` square brackets are used for globbing/pattern matching. This means you
+need to escape the square brackets in the above installation. You can do so
+by including the dependencies in quotes like `pip install --pre 'deepchem[jax]'`
 
 ### Nightly build version
-
-You install the nightly build version via pip. The nightly version is built by the HEAD of DeepChem.
+The nightly version is built by the HEAD of DeepChem. It can be installed using
 
 ```bash
-pip install tensorflow==2.3.*
 pip install --pre deepchem
-```
-
-RDKit is a soft requirement package, but many useful methods like molnet depend on it. We recommend installing RDKit with deepchem if you use conda.
-
-```bash
-conda install -y -c conda-forge rdkit
 ```
 
 ### Docker
@@ -91,16 +104,16 @@ DockerHub : https://hub.docker.com/repository/docker/deepchemio/deepchem
 - `deepchemio/deepchem:x.x.x`
   - Image built by using a conda (x.x.x is a version of deepchem)
   - The x.x.x image is built when we push x.x.x. tag
-  - Dockerfile is put in `docker/conda-forge` directory
+  - Dockerfile is put in `docker/tag` directory
 - `deepchemio/deepchem:latest`
   - Image built from source codes
   - The latest image is built every time we commit to the master branch
-  - Dockerfile is put in `docker/master` directory
+  - Dockerfile is put in `docker/nightly` directory
 
 You pull the image like this.
 
 ```bash
-docker pull deepchemio/deepchem:2.3.0
+docker pull deepchemio/deepchem:2.4.0
 ```
 
 If you want to know docker usages with deepchem in more detail, please check [the document](https://deepchem.readthedocs.io/en/latest/installation.html#docker).
@@ -117,9 +130,13 @@ The DeepChem project maintains an extensive collection of [tutorials](https://gi
 
 After working through the tutorials, you can also go through other [examples](https://github.com/deepchem/deepchem/tree/master/examples). To apply `deepchem` to a new problem, try starting from one of the existing examples or tutorials and modifying it step by step to work with your new use-case. If you have questions or comments you can raise them on our [gitter](https://gitter.im/deepchem/Lobby).
 
-### Gitter
+### Supported Integrations
 
-Join us on gitter at [https://gitter.im/deepchem/Lobby](https://gitter.im/deepchem/Lobby). Probably the easiest place to ask simple questions or float requests for new features.
+- [Weights & Biases](https://docs.wandb.ai/guides/integrations/other/deepchem): Track your DeepChem model's training and evaluation metrics.
+
+### Discord
+
+The DeepChem [Discord](https://discord.gg/cGzwCdrUqS) hosts a number of scientists, developers, and enthusiasts interested in deep learning for the life sciences. Probably the easiest place to ask simple questions or float requests for new features.
 
 ## About Us
 

@@ -21,7 +21,7 @@ focused on applications of deep learning to chemistry, but the project
 has slowly evolved past its roots to broader applications of deep
 learning to the sciences.
 
-The core `DeepChem Repo`_ serves as a monorepo that organizes the DeepChem suite of scientific tools. 
+The core `DeepChem Repo`_ serves as a monorepo that organizes the DeepChem suite of scientific tools.
 As the project matures, smaller more focused tool will be surfaced in more targeted repos.
 DeepChem is primarily developed in Python, but we are experimenting with adding support for other languages.
 
@@ -49,20 +49,15 @@ Quick Start
 -----------
 
 The fastest way to get up and running with DeepChem is to run it on
-Google Colab. Check out one of the `DeepChem Tutorials`_ or this
-`forum post`_ for Colab quick start guides.
+Google Colab. Check out one of the `DeepChem Tutorials`_.
 
 If you'd like to install DeepChem locally,
-we recommend installing deepchem which is nightly version and RDKit.
-RDKit is a soft requirement package, but many useful methods depend on it.
 
 .. code-block:: bash
 
-    pip install tensorflow==2.3.*
-    pip install --pre deepchem
-    conda install -y -c conda-forge rdkit
+    pip install deepchem
 
-Then open your python and try running.
+Then open your IDE or text editor of choice and try running the following code with python.
 
 .. code-block:: python
 
@@ -73,14 +68,14 @@ Then open your python and try running.
 
 About Us
 --------
-DeepChem is managed by a team of open source contributors. Anyone is free to join and contribute! 
+DeepChem is managed by a team of open source contributors. Anyone is free to join and contribute!
 DeepChem has weekly developer calls. You can find `meeting minutes`_ on our `forums`_.
 
 DeepChem developer calls are open to the public!
 To listen in, please email X.Y@gmail.com, where X=bharath and Y=ramsundar to introduce yourself and ask for an invite.
 
 .. important::
-   
+
     | Join our `community gitter <https://gitter.im/deepchem/Lobby>`_ to discuss DeepChem.
     | Sign up for our `forums <https://forum.deepchem.io/>`_ to talk about research, development, and general questions.
 
@@ -96,28 +91,18 @@ To listen in, please email X.Y@gmail.com, where X=bharath and Y=ramsundar to int
    get_started/requirements
    get_started/tutorials
    get_started/examples
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-   :caption: Development Guide
-
-   development_guide/licence
-   development_guide/scientists
-   development_guide/coding
-   development_guide/infra
+   get_started/issues
+   get_started/Docker-tutorial
+   get_started/Documentation-tutorial
 
 .. toctree::
    :glob:
    :maxdepth: 1
    :caption: API Reference
 
-   api_reference/datasets
-   api_reference/dataloaders
-   api_reference/dataclasses
+   api_reference/data
    api_reference/moleculenet
    api_reference/featurizers
-   api_reference/tokenizers
    api_reference/splitters
    api_reference/transformers
    api_reference/models
@@ -128,3 +113,14 @@ To listen in, please email X.Y@gmail.com, where X=bharath and Y=ramsundar to int
    api_reference/rl
    api_reference/docking
    api_reference/utils
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+   :caption: Development Guide
+
+   development_guide/licence
+   development_guide/scientists
+   development_guide/coding
+   development_guide/ci
+   development_guide/infra

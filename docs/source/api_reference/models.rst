@@ -7,131 +7,7 @@ we support a broad range of different machine learning frameworks (currently
 scikit-learn, xgboost, TensorFlow, and PyTorch) since different frameworks are
 more and less suited for different scientific applications.
 
-Model Cheatsheet
-----------------
-If you're just getting started with DeepChem, you're probably interested in the
-basics. The place to get started is this "model cheatsheet" that lists various
-types of custom DeepChem models. Note that some wrappers like :code:`SklearnModel`
-and :code:`GBDTModel` which wrap external machine learning libraries are excluded,
-but this table is otherwise complete.
-
-As a note about how to read this table, each row describes what's needed to
-invoke a given model. Some models must be applied with given :code:`Transformer` or
-:code:`Featurizer` objects. Some models also have custom training methods. You can
-read off what's needed to train the model from the table below.
-
-
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| Model                                  | Type       | Input Type           | Transformations        | Acceptable Featurizers                                         | Fit Method           |
-+========================================+============+======================+========================+================================================================+======================+
-| :code:`AtomicConvModel`                | Classifier/| Tuple                |                        | :code:`ComplexNeighborListFragmentAtomicCoordinates`           | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`ChemCeption`                    | Classifier/| Tensor of shape      |                        | :code:`SmilesToImage`                                          | :code:`fit`          |
-|                                        | Regressor  | :code:`(N, M, c)`    |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`CNN`                            | Classifier/| Tensor of shape      |                        |                                                                | :code:`fit`          |
-|                                        | Regressor  | :code:`(N, c)` or    |                        |                                                                |                      |
-|                                        |            | :code:`(N, M, c)` or |                        |                                                                |                      |
-|                                        |            | :code:`(N, M, L, c)` |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`DTNNModel`                      | Classifier/| Matrix of            |                        | :code:`CoulombMatrix`                                          | :code:`fit`          |
-|                                        | Regressor  | shape :code:`(N, N)` |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`DAGModel`                       | Classifier/| :code:`ConvMol`      | :code:`DAGTransformer` | :code:`ConvMolFeaturizer`                                      | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`GraphConvModel`                 | Classifier/| :code:`ConvMol`      |                        | :code:`ConvMolFeaturizer`                                      | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`MPNNModel`                      | Classifier/| :code:`WeaveMol`     |                        | :code:`WeaveFeaturizer`                                        | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`MultitaskClassifier`            | Classifier | Vector of            |                        | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`MultitaskRegressor`             | Regressor  | Vector of            |                        | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`MultitaskFitTransformRegressor` | Regressor  | Vector of            | Any                    | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`MultitaskIRVClassifier`         | Classifier | Vector of            | :code:`IRVTransformer` | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`ProgressiveMultitaskClassifier` | Classifier | Vector of            |                        | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`ProgressiveMultitaskRegressor`  | Regressor  | Vector of            |                        | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`RobustMultitaskClassifier`      | Classifier | Vector of            |                        | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`RobustMultitaskRegressor`       | Regressor  | Vector of            |                        | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`ScScoreModel`                   | Classifier | Vector of            |                        | :code:`CircularFingerprint`,                                   | :code:`fit`          | 
-|                                        |            | shape :code:`(N,)`   |                        | :code:`RDKitDescriptors`,                                      |                      |
-|                                        |            |                      |                        | :code:`CoulombMatrixEig`,                                      |                      |
-|                                        |            |                      |                        | :code:`RdkitGridFeaturizer`,                                   |                      |
-|                                        |            |                      |                        | :code:`BindingPocketFeaturizer`,                               |                      |
-|                                        |            |                      |                        | :code:`ElementPropertyFingerprint`,                            |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`SeqToSeq`                       | Sequence   | Sequence             |                        |                                                                | :code:`fit_sequences`|
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`Smiles2Vec`                     | Classifier/| Sequence             |                        | :code:`SmilesToSeq`                                            | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`TextCNNModel`                   | Classifier/| String               |                        |                                                                | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`WGAN`                           | Adversarial| Pair                 |                        |                                                                | :code:`fit_gan`      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`CGCNNModel`                     | Classifier/| :code:`GraphData`    |                        | :code:`CGCNNFeaturizer`                                        | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`GATModel`                       | Classifier/| :code:`GraphData`    |                        | :code:`MolGraphConvFeaturizer`                                 | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`GCNModel`                       | Classifier/| :code:`GraphData`    |                        | :code:`MolGraphConvFeaturizer`                                 | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
-| :code:`AttentiveFPModel`               | Classifier/| :code:`GraphData`    |                        | :code:`MolGraphConvFeaturizer`                                 | :code:`fit`          |
-|                                        | Regressor  |                      |                        |                                                                |                      |
-+----------------------------------------+------------+----------------------+------------------------+----------------------------------------------------------------+----------------------+
+.. include:: model_cheatsheet.rst
 
 Model
 -----
@@ -181,10 +57,19 @@ Losses
 .. autoclass:: deepchem.models.losses.L1Loss
   :members:
 
+.. autoclass:: deepchem.models.losses.HuberLoss
+  :members:
+
 .. autoclass:: deepchem.models.losses.L2Loss
   :members:
 
 .. autoclass:: deepchem.models.losses.HingeLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.SquaredHingeLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.PoissonLoss
   :members:
 
 .. autoclass:: deepchem.models.losses.BinaryCrossEntropy
@@ -211,6 +96,36 @@ Losses
 .. autoclass:: deepchem.models.losses.ShannonEntropy
   :members:
 
+.. autoclass:: deepchem.models.losses.GlobalMutualInformationLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.LocalMutualInformationLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.GroverPretrainLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.EdgePredictionLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.GraphNodeMaskingLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.GraphEdgeMaskingLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.DeepGraphInfomaxLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.GraphContextPredLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.DensityProfileLoss
+  :members:
+
+.. autoclass:: deepchem.models.losses.NTXentMultiplePositives
+  :members:
+
 Optimizers
 ----------
 
@@ -224,6 +139,12 @@ Optimizers
   :members:
 
 .. autoclass:: deepchem.models.optimizers.Adam
+  :members:
+
+.. autoclass:: deepchem.models.optimizers.AdamW
+  :members:
+
+.. autoclass:: deepchem.models.optimizers.SparseAdam
   :members:
 
 .. autoclass:: deepchem.models.optimizers.RMSProp
@@ -241,6 +162,8 @@ Optimizers
 .. autoclass:: deepchem.models.optimizers.LinearCosineDecay
   :members:
 
+.. autoclass:: deepchem.models.optimizers.LambdaLRWithWarmup
+  :members:
 
 Keras Models
 ============
@@ -258,36 +181,31 @@ Training loss and validation metrics can be automatically logged to `Weights & B
 
   # Login in shell (required only once)
   wandb login
+  # Login in notebook (required only once)
+  import wandb
+  wandb.login()
 
-  # Start a W&B run in your script (refer to docs for optional parameters)
-  wandb.init(project="my project")
+  # Initialize a WandbLogger
+  logger = WandbLogger(…)
 
-  # Set `wandb` arg when creating `KerasModel`
-  model = KerasModel(…, wandb=True)
+  # Set `wandb_logger` when creating `KerasModel`
+  import deepchem as dc
+  # Log training loss to wandb
+  model = dc.models.KerasModel(…, wandb_logger=logger)
+  model.fit(…)
+
+  # Log validation metrics to wandb using ValidationCallback
+  import deepchem as dc
+  vc = dc.models.ValidationCallback(…)
+  model = KerasModel(…, wandb_logger=logger)
+  model.fit(…, callbacks=[vc])
+  logger.finish()
 
 .. _`Keras`: https://keras.io/
 
 .. _`Weights & Biases`: http://docs.wandb.com/
 
 .. autoclass:: deepchem.models.KerasModel
-  :members:
-
-MultitaskRegressor
-------------------
-
-.. autoclass:: deepchem.models.MultitaskRegressor
-  :members:
-
-MultitaskFitTransformRegressor
-------------------------------
-
-.. autoclass:: deepchem.models.MultitaskFitTransformRegressor
-  :members:
-
-MultitaskClassifier
--------------------
-
-.. autoclass:: deepchem.models.MultitaskClassifier
   :members:
 
 TensorflowMultitaskIRVClassifier
@@ -350,6 +268,12 @@ MPNNModel
 .. autoclass:: deepchem.models.MPNNModel
   :members:
 
+BasicMolGANModel
+----------------
+
+.. autoclass:: deepchem.models.BasicMolGANModel
+  :members:
+
 ScScoreModel
 ------------
 
@@ -372,12 +296,6 @@ WGAN
 ^^^^
 
 .. autoclass:: deepchem.models.WGAN
-  :members:
-
-CNN
----
-
-.. autoclass:: deepchem.models.CNN
   :members:
 
 TextCNNModel
@@ -418,14 +336,14 @@ for any application requiring a probabilistic model with these capabilities, e.g
 
 .. autoclass:: deepchem.models.normalizing_flows.NormalizingFlowModel
   :members:
-  
+
 
 PyTorch Models
 ==============
 
 DeepChem supports the use of `PyTorch`_ to build deep learning models.
 
-.. _`PyTorch`: https://pytorch.org/ 
+.. _`PyTorch`: https://pytorch.org/
 
 TorchModel
 ----------
@@ -433,6 +351,38 @@ TorchModel
 You can wrap an arbitrary :code:`torch.nn.Module` in a :code:`TorchModel` object.
 
 .. autoclass:: deepchem.models.TorchModel
+  :members:
+
+ModularTorchModel
+-----------------
+
+You can modify networks for different tasks by using a :code:`ModularTorchModel`.
+
+.. autoclass:: deepchem.models.torch_models.modular.ModularTorchModel
+  :members:
+
+CNN
+---
+
+.. autoclass:: deepchem.models.CNN
+  :members:
+
+MultitaskRegressor
+------------------
+
+.. autoclass:: deepchem.models.MultitaskRegressor
+  :members:
+
+MultitaskFitTransformRegressor
+------------------------------
+
+.. autoclass:: deepchem.models.MultitaskFitTransformRegressor
+  :members:
+
+MultitaskClassifier
+-------------------
+
+.. autoclass:: deepchem.models.MultitaskClassifier
   :members:
 
 CGCNNModel
@@ -460,6 +410,18 @@ AttentiveFPModel
 .. autoclass:: deepchem.models.AttentiveFPModel
   :members:
 
+PagtnModel
+----------
+
+.. autoclass:: deepchem.models.PagtnModel
+  :members:
+
+AtomConvModel
+-------------
+
+.. autoclass:: deepchem.models.torch_models.AtomConvModel
+  :members:
+
 MPNNModel
 ---------
 
@@ -467,4 +429,286 @@ Note that this is an alternative implementation for MPNN and currently you can o
 ``deepchem.models.torch_models``.
 
 .. autoclass:: deepchem.models.torch_models.MPNNModel
+  :members:
+
+InfoGraphModel
+--------------
+
+.. autoclass:: deepchem.models.torch_models.InfoGraphModel
+  :members:
+
+InfoGraphStarModel
+------------------
+
+.. autoclass:: deepchem.models.torch_models.InfoGraphStarModel
+  :members:
+
+
+GNNModular
+----------
+
+.. autoclass:: deepchem.models.torch_models.gnn.GNNModular
+  :members:
+
+InfoMax3DModular
+----------------
+
+.. autoclass:: deepchem.models.torch_models.gnn3d.InfoMax3DModular
+  :members:
+
+
+LCNNModel
+---------
+
+.. autoclass:: deepchem.models.LCNNModel
+  :members:
+
+MEGNetModel
+-----------
+
+.. autoclass:: deepchem.models.MEGNetModel
+  :members:
+
+MATModel
+--------
+
+.. autoclass:: deepchem.models.torch_models.MATModel
+  :members:
+
+NormalizingFlowModel
+--------------------
+
+.. autoclass:: deepchem.models.torch_models.flows.NormalizingFlowModel
+  :members:
+
+DMPNNModel
+----------
+
+.. autoclass:: deepchem.models.torch_models.DMPNNModel
+  :members:
+
+GroverModel
+-----------
+
+.. autoclass:: deepchem.models.torch_models.GroverModel
+  :members:
+
+DTNNModel
+---------
+
+.. autoclass:: deepchem.models.torch_models.DTNNModel
+  :members:
+
+SeqToSeqModel
+-------------
+.. autoclass:: deepchem.models.torch_models.SeqToSeqModel
+  :members:
+
+GAN
+---
+
+.. autoclass:: deepchem.models.torch_models.GAN
+  :members:
+
+GANModel
+--------
+
+.. autoclass:: deepchem.models.torch_models.GANModel
+  :members:
+
+WGANModel
+---------
+
+.. autoclass:: deepchem.models.torch_models.WGANModel
+  :members:
+
+BasicMolGANModel
+----------------
+
+.. autoclass:: deepchem.models.torch_models.BasicMolGANModel
+  :members:
+
+Weave
+----------
+
+.. autoclass:: deepchem.models.torch_models.Weave
+  :members:
+
+WeaveModel
+----------
+
+.. autoclass:: deepchem.models.torch_models.WeaveModel
+  :members:
+
+ProgressiveMultitaskClassifier
+-------------------------
+
+.. autoclass:: deepchem.models.torch_models.ProgressiveMultitaskClassifier
+  :members:
+
+ProgressiveMultitaskRegressor
+-------------------------
+
+.. autoclass:: deepchem.models.torch_models.ProgressiveMultitaskRegressor
+  :members:
+
+RobustMultitaskClassifier
+-------------------------
+
+.. autoclass:: deepchem.models.torch_models.RobustMultitaskClassifier
+  :members:
+
+RobustMultitaskRegressor
+------------------------
+
+.. autoclass:: deepchem.models.torch_models.RobustMultitaskRegressor
+  :members:
+  
+Density Functional Theory Model - XCModel
+-----------------------------------------
+
+.. autoclass:: deepchem.models.dft.dftxc.XCModel
+  :members:
+
+TextCNNModel
+------------
+
+.. autoclass:: deepchem.models.torch_models.TextCNNModel
+  :members:
+
+PINNModel
+---------
+
+.. autoclass:: deepchem.models.torch_models.PINNModel
+  :members:
+
+UNetModel
+------------
+
+.. autoclass:: deepchem.models.torch_models.UNetModel
+  :members:
+
+_GraphConvTorchModel
+--------------------
+
+.. autoclass:: deepchem.models.torch_models._GraphConvTorchModel
+  :members:
+
+GraphConvModel
+--------------------
+
+.. autoclass:: deepchem.models.torch_models.GraphConvModel
+  :members:
+
+Smiles2Vec
+--------------------
+
+.. autoclass:: deepchem.models.torch_models.Smiles2Vec
+  :members:
+
+Smiles2VecModel
+--------------------
+
+.. autoclass:: deepchem.models.torch_models.Smiles2VecModel
+  :members:
+
+MXMNet
+------
+
+.. autoclass:: deepchem.models.torch_models.MXMNet
+  :members:
+
+InceptionV3Model
+----------------
+
+.. autoclass:: deepchem.models.torch_models.InceptionV3Model
+  :members:
+
+MultitaskIRVClassifier
+----------------
+
+.. autoclass:: deepchem.models.torch_models.MultitaskIRVClassifier
+  :members:
+
+PyTorch Lightning Models
+========================
+
+DeepChem supports the use of `PyTorch-Lightning`_ to build PyTorch models.
+
+.. _`PyTorch-Lightning`: https://www.pytorchlightning.ai/
+
+DCLightningModule
+-----------------
+
+You can wrap an arbitrary :code:`TorchModel` in a :code:`DCLightningModule` object.
+
+.. autoclass:: deepchem.models.DCLightningModule
+  :members:
+
+Jax Models
+==========
+
+DeepChem supports the use of `Jax`_ to build deep learning models.
+
+.. _`Jax`: https://github.com/google/jax
+
+JaxModel
+--------
+
+.. autoclass:: deepchem.models.JaxModel
+  :members:
+
+PinnModel
+---------
+
+.. autoclass:: deepchem.models.PINNModel
+  :members:
+
+Hugging Face Models
+===================
+
+HuggingFace models from the `transformers <https://huggingface.co/models>`_ library can wrapped using the wrapper :code:`HuggingFaceModel`
+
+.. autoclass:: deepchem.models.torch_models.hf_models.HuggingFaceModel
+  :members:
+
+
+---------
+
+.. autoclass:: deepchem.models.torch_models.chemberta.Chemberta
+  :members:
+
+MoLFormer
+---------
+
+.. autoclass:: deepchem.models.torch_models.molformer.MoLFormer
+  :members:
+
+ProtBERT
+---------
+
+.. autoclass:: deepchem.models.torch_models.prot_bert.ProtBERT
+  :members:
+
+DeepAbLLM
+---------
+
+.. autoclass:: deepchem.models.torch_models.antibody_modeling.DeepAbLLM
+  :members:
+
+OneFormer
+---------
+
+.. autoclass:: deepchem.models.torch_models.oneformer.OneFormer
+  :members:
+
+Trainer
+=======
+
+A `Trainer` object automates the scaling of DeepChem model's training into multi-gpu and multi-node infrastructures.
+
+DistributedTrainer
+------------------
+
+.. autoclass:: deepchem.trainer.DistributedTrainer
   :members:

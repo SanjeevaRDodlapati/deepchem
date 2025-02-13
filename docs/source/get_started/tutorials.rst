@@ -147,7 +147,7 @@ splitting using molecular scaffolds.
 Model Training and Evaluating
 -----------------------------
 
-The :code:`dc.models` conteins an extensive collection of models for scientific applications. 
+The :code:`dc.models` contains an extensive collection of models for scientific applications. 
 Most of all models inherits  :code:`dc.models.Model` and we can train them by just calling :code:`fit` method.
 You don't need to care about how to use specific framework APIs.
 We'll show you the example about the usage of models.
@@ -186,8 +186,8 @@ by just calling :code:`evaluate` method.
 More Tutorials
 --------------
 
-DeepChem maintains an extensive collection of addition `tutorials`_ that are meant to
-be run on Google `colab`_, an online platform that allows you to execute Jupyter notebooks.
+DeepChem maintains `an extensive collection of addition tutorials`_ that are meant to
+be run on `Google Colab`_, an online platform that allows you to execute Jupyter notebooks.
 Once you've finished this introductory tutorial, we recommend working through these more involved tutorials.
 
 .. _`scikit-learn`: https://scikit-learn.org/stable/
@@ -195,5 +195,5 @@ Once you've finished this introductory tutorial, we recommend working through th
 .. _`XGBoost`: https://xgboost.readthedocs.io/en/latest/
 .. _`PyTorch`: https://pytorch.org/
 .. _`JAX`: https://github.com/google/jax
-.. _`tutorials`: https://github.com/deepchem/deepchem/tree/master/examples/tutorials	
-.. _`colab`: https://colab.research.google.com/
+.. _`an extensive collection of addition tutorials`: https://github.com/deepchem/deepchem/tree/master/examples/tutorials	
+.. _`Google Colab`: https://colab.research.google.com/

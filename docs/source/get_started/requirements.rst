@@ -4,17 +4,14 @@ Requirements
 Hard requirements
 ^^^^^^^^^^^^^^^^^
 
-DeepChem officially supports Python 3.6 through 3.7 and requires these packages on any condition.
+DeepChem officially supports Python 3.8 through 3.10 and requires these packages on any condition.
 
 - `joblib`_
 - `NumPy`_
 - `pandas`_
 - `scikit-learn`_
+- `SymPy`_
 - `SciPy`_
-- `TensorFlow`_
-
-  - `deepchem>=2.4.0` depends on TensorFlow v2 (2.3.x)
-  - `deepchem<2.4.0` depends on  TensorFlow v1 (>=1.14)
 
 
 Soft requirements
@@ -39,6 +36,10 @@ DeepChem has a number of "soft" requirements.
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
 | `HuggingFace Transformers`_    | Not Testing   | :code:`dc.feat.smiles_tokenizer`                  |
+|                                |               |                                                   |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
+| `HuggingFace Tokenizers`_      | latest        | :code:`dc.feat.HuggingFaceVocabularyBuilder`      |
 |                                |               |                                                   |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
@@ -94,23 +95,27 @@ DeepChem has a number of "soft" requirements.
 |                                |               |                                                   |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
-| `PyTorch`_                     | 1.6.0         | :code:`dc.data.datasets`                          |
+| `PyTorch`_                     | 2.2.1         | :code:`dc.models.torch_models`                    |
 |                                |               |                                                   |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
-| `PyTorch Geometric`_           | 1.6.x (with   | :code:`dc.feat.graph_data`                        |
-|                                | PyTorch 1.6.0)| :code:`dc.models.torch_models`                    |
+| `PyTorch Geometric`_           | latest (with  | :code:`dc.feat.graph_data`                        |
+|                                | PyTorch 2.2.1)| :code:`dc.models.torch_models`                    |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
 | `RDKit`_                       | latest        | Many modules                                      |
-|                                |               | (we recommend you to instal)                      |
+|                                |               | (we recommend you to install)                     |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
 | `simdna`_                      | latest        | :code:`dc.metrics.genomic_metrics`,               |
 |                                |               | :code:`dc.molnet.dnasim`                          |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
-| `Tensorflow Probability`_      | 0.11.x        | :code:`dc.rl`                                     |
+| `TensorFlow`_                  | 2.15          | :code:`dc.models`                                 |
+|                                |               | `deepchem>=2.4.0` depends on TensorFlow v2(2.3.x) |
+|                                |               | `deepchem<2.4.0` depends on TensorFlow v1(>=1.14) |
++--------------------------------+---------------+---------------------------------------------------+
+| `Tensorflow Probability`_      | 0.23.x        | :code:`dc.rl`                                     |
 |                                |               |                                                   |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
@@ -122,11 +127,35 @@ DeepChem has a number of "soft" requirements.
 |                                |               |                                                   |
 |                                |               |                                                   |
 +--------------------------------+---------------+---------------------------------------------------+
-          
+| `Tensorflow Addons`_           | latest        | :code:`dc.models.optimizers`                      |
+|                                |               |                                                   |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
+| `pySCF`_                       | latest        | :code:`dc.models.torch_models.ferminet`           |
+|                                |               |                                                   |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
+| `pysam`_                       | latest        | :code:`dc.feat.bio_seq_featurizer`                |
+|                                |               | :code:`dc.models.data_loader`                     |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
+| `pylibxc`_                     | latest        | :code:`dc.utils.dft_utils.api.getxc`              |
+|                                |               | :code:`dc.utils.dft_utils.xc.libxc_wrapper`       |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
+| `dqclibs`_                     | latest        | :code:`dc.utils.dft_utils.hamilton.intor.utils`   |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
+| `basis-set-exchange`_          | latest        | :code:`deepchem.utils.dft_utils.api.loadbasis`    |
+|                                |               |                                                   |
++--------------------------------+---------------+---------------------------------------------------+
+
+
 .. _`joblib`: https://pypi.python.org/pypi/joblib
 .. _`NumPy`: https://numpy.org/
 .. _`pandas`: http://pandas.pydata.org/
 .. _`scikit-learn`: https://scikit-learn.org/stable/
+.. _`SymPy`: https://www.sympy.org/en/index.html
 .. _`SciPy`: https://www.scipy.org/
 .. _`TensorFlow`: https://www.tensorflow.org/
 .. _`BioPython`: https://biopython.org/wiki/Documentation
@@ -153,3 +182,10 @@ DeepChem has a number of "soft" requirements.
 .. _`Tensorflow Probability`: https://www.tensorflow.org/probability
 .. _`Weights & Biases`: https://docs.wandb.com/
 .. _`XGBoost`: https://xgboost.readthedocs.io/en/latest/
+.. _`Tensorflow Addons`: https://www.tensorflow.org/addons/overview
+.. _`HuggingFace Tokenizers`: https://huggingface.co/docs/tokenizers/index
+.. _`pySCF`: https://pyscf.org/install.html
+.. _`pysam`: https://pysam.readthedocs.io/en/latest/api.html
+.. _`pylibxc`: https://gitlab.com/libxc/libxc/
+.. _`dqclibs`: https://github.com/diffqc/dqclibs
+.. _`basis-set-exchange`: https://www.basissetexchange.org/

@@ -12,8 +12,10 @@ items=(
     "deepchem/splits"
     "deepchem/trans"
     "deepchem/utils"
+    "deepchem/molnet"
+    "deepchem/models"
 )
 
 for item in "${items[@]}" ; do
-    flake8 ${item} --count --show-source --statistics
+    echo ${item}; flake8 ${item} --exclude=__init__.py --count --show-source --statistics
 done

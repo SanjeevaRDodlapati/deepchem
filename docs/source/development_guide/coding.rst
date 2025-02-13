@@ -1,6 +1,27 @@
 Coding Conventions
 ==================
 
+Pre-Commit
+-----------
+
+.. _`Pre-Commit`: https://pre-commit.com/
+
+We use `pre-commit`_ to ensure that we're always keeping up with the best 
+practices when it comes to linting, standard code conventions and type 
+annotations. Although it may seem time consuming at first as to why is one 
+supposed to run all these tests and checks but it helps in identifying simple 
+issues before submission to code review. We've already specified a configuration 
+file with a list of hooks that will get executed before every commit. 
+
+First you'll need to setup the git hook scripts by installing them.
+
+.. code-block:: bash
+
+  pre-commit install
+
+Now whenever you commit, pre-commit will run the necessary hooks on the modified 
+files.
+
 Code Formatting
 ---------------
 
@@ -22,14 +43,14 @@ YAPF is run on every pull request to make sure the formatting is correct, so if
 you forget to do this the continuous integration system will remind you.
 Because different versions of YAPF can produce different results, it is
 essential to use the same version that is being run on CI.  At present, that
-is 0.22.  We periodically update it to newer versions.
+is 0.32.  We periodically update it to newer versions.
 
 Linting
 -------
 
-.. _`Flake8`: https://github.com/google/yapf
+.. _`Flake8`: https://github.com/pycqa/flake8
 
-We use `Flake8` to check our code syntax. Lint tools basically provide these benefits.
+We use `Flake8`_ to check our code syntax. Lint tools basically provide these benefits.
 
 - Prevent things like syntax errors or typos
 - Save our review time (no need to check unused codes or typos)
@@ -40,7 +61,7 @@ Whenever you modify a file, run :code:`flake8` on it.
 
   flake8 <modified file> --count
 
-If the command return 0, it means your code pass Flake8 check.
+If the command returns 0, it means your code passes the Flake8 check.
 
 Docstrings
 ----------
@@ -53,8 +74,12 @@ appropriate, cite the relevant publications.
 
 .. _`numpy`: https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard
 
-All docstrings should follow the `numpy`_ docstring formatting conventions.
+All docstrings should follow the `numpy`_ docstring formatting conventions. To
+ensure that the code examples in the docstrings are working as expected, run
 
+.. code-block:: bash
+
+  python -m doctest <modified file>
 
 Unit Tests
 ----------
@@ -80,6 +105,29 @@ that break them may sometimes slip through and get merged into the repository.
 We still try to run them regularly, so hopefully the problem will be discovered
 fairly soon.
 
+The full suite of slow tests can be run from the root directory of the source code as
+
+.. code-block:: bash
+
+  pytest -v -m 'slow' deepchem
+
+To test your code locally, you will have to setup a symbolic link to your
+current development directory. To do this, simply run
+
+.. code-block:: bash
+
+  python setup.py develop
+
+while installing the package from source. This will let you see changes that you
+make to the source code when you import the package and, in particular, it
+allows you to import the new classes/methods for unit tests.
+
+Ensure that the tests pass locally! Check this by running
+
+.. code-block:: bash
+
+  python -m pytest <modified file>
+
 Testing Machine Learning Models
 -------------------------------
 
@@ -100,6 +148,36 @@ DeepChem, you should add at least a few basic types of unit tests:
 Note that unit tests are not sufficient to gauge the real performance
 of a model. You should benchmark your model on larger datasets as well
 and report your benchmarking tests in the PR comments.
+
+For testing tensorflow models and pytorch models, we recommend testing in
+different conda environments. Tensorflow 2.6 supports numpy 1.19 while
+pytorch supports numpy 1.21. This version mismatch on numpy dependency
+sometimes causes trouble in installing tensorflow and pytorch backends in
+the same environment.
+
+For testing tensorflow models of deepchem, we create a tensorflow test environment
+and then run the test as follows:
+
+.. code-block:: bash
+
+  conda create -n tf-test python=3.8
+  conda activate tf-test
+  pip install conda-merge
+  conda-merge requirements/tensorflow/env_tensorflow.yml requirements/env_test.yml > env.yml
+  conda env update --file env.yml --prune
+  pytest -v -m 'tensorflow' deepchem
+
+For testing pytorch models of deepchem, first create a pytorch test environment
+and then run the tests as follows:
+
+.. code-block:: bash
+
+  conda create -n pytorch-test python=3.8
+  conda activate pytorch-test
+  pip install conda-merge
+  conda-merge requirements/torch/env_torch.yml requirements/torch/env_torch.cpu.yml requirements/env_test.yml > env.yml
+  conda env update --file env.yml --prune
+  pytest -v -m 'torch' deepchem
 
 Type Annotations
 ----------------

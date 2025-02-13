@@ -1,5 +1,5 @@
 from deepchem.molnet.load_function.bace_datasets import load_bace_classification, load_bace_regression
-from deepchem.molnet.load_function.bbbc_datasets import load_bbbc001, load_bbbc002
+from deepchem.molnet.load_function.bbbc_datasets import load_bbbc001, load_bbbc002, load_bbbc003, load_bbbc004, load_bbbc005
 from deepchem.molnet.load_function.bbbp_datasets import load_bbbp
 from deepchem.molnet.load_function.cell_counting_datasets import load_cell_counting
 from deepchem.molnet.load_function.chembl_datasets import load_chembl
@@ -31,8 +31,11 @@ from deepchem.molnet.load_function.thermosol_datasets import load_thermosol
 from deepchem.molnet.load_function.hppb_datasets import load_hppb
 from deepchem.molnet.load_function.chembl25_datasets import load_chembl25
 from deepchem.molnet.load_function.zinc15_datasets import load_zinc15
+from deepchem.molnet.load_function.freesolv_dataset import load_freesolv
 from deepchem.molnet.load_function.material_datasets.load_bandgap import load_bandgap
 from deepchem.molnet.load_function.material_datasets.load_perovskite import load_perovskite
+from deepchem.molnet.load_function.material_datasets.load_Pt_NO_surface_adsorbate_energy import load_Platinum_Adsorption
+
 from deepchem.molnet.load_function.material_datasets.load_mp_formation_energy import load_mp_formation_energy
 from deepchem.molnet.load_function.material_datasets.load_mp_metallicity import load_mp_metallicity
 
